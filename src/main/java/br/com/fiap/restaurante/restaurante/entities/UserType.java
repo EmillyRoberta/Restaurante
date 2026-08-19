@@ -1,6 +1,6 @@
 package br.com.fiap.restaurante.restaurante.entities;
 
 public enum UserType {
-    CLIENT,
+    CUSTOMER,
     RESTAURANT_OWNER
 }
