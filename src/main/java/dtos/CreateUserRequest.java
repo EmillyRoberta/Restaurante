@@ -22,11 +22,9 @@ public record CreateUserRequest(
         String password,
 
         @NotNull
-        @NotBlank(message="Address is required")
         AddressRequest address,
 
         @NotNull
-        @NotBlank(message="User type is required")
         UserType userType
 ) {
 }

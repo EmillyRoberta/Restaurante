@@ -20,7 +20,6 @@ public record UpdateUserRequest(
         String login,
 
         @NotNull
-        @NotBlank(message="address is required")
         AddressRequest address
 ) {
 
