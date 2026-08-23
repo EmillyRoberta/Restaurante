@@ -2,6 +2,7 @@ package br.com.fiap.restaurante.restaurante.services;
 
 import br.com.fiap.restaurante.restaurante.entities.Address;
 import br.com.fiap.restaurante.restaurante.entities.User;
+import br.com.fiap.restaurante.restaurante.repositories.RestaurantRepository;
 import br.com.fiap.restaurante.restaurante.repositories.UserRepository;
 import dtos.*;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     public final UserRepository userRepository;
+    public final RestaurantRepository restaurantRepository;
 
     public UserResponse createUser(CreateUserRequest request) {
         validateUniqueFields(request.email(), request.login());
@@ -74,6 +76,12 @@ public class UserService {
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (restaurantRepository.existsByOwnerId(id)) {
+            throw new RuntimeException(
+                    "User cannot be deleted because owns one or more restaurants"
+            );
+        }
 
         userRepository.delete(user);
     }
