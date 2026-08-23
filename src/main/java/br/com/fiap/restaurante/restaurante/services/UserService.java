@@ -78,29 +78,12 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    private UserResponse toResponse(User user) {
-        return new UserResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getLogin(),
-                new AddressResponse(
-                        user.getAddress().getStreet(),
-                        user.getAddress().getNumber(),
-                        user.getAddress().getCity(),
-                        user.getAddress().getState(),
-                        user.getAddress().getZipCode()
-                ),
-                user.getUserType()
-        );
-    }
-
     public UserResponse findUserById(Long id) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return toResponse(user);
+        return UserResponse.fromEntity(user);
     }
 
     public Page<UserResponse> findAllUsers(int page, int size) {
@@ -108,7 +91,7 @@ public class UserService {
         Pageable pageable = PageRequest.of(page, size);
 
         return userRepository.findAll(pageable)
-                .map(this::toResponse);
+                .map(UserResponse::fromEntity);
     }
 
     public List<UserResponse> findByName(String name) {
