@@ -2,6 +2,7 @@ package br.com.fiap.restaurante.restaurante.controllers;
 
 import br.com.fiap.restaurante.restaurante.services.UserService;
 import dtos.CreateUserRequest;
+import dtos.LoginRequest;
 import dtos.UpdateUserRequest;
 import dtos.UserResponse;
 import jakarta.validation.Valid;
@@ -10,8 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/v1/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -52,5 +55,18 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> findById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.findUserById(id));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserResponse>> searchByName(
+            @RequestParam String name) {
+        return ResponseEntity.ok(userService.findByName(name));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> login(
+            @Valid @RequestBody LoginRequest request) {
+
+        return ResponseEntity.ok(userService.validateLogin(request));
     }
 }

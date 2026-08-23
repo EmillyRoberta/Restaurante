@@ -2,11 +2,9 @@ package br.com.fiap.restaurante.restaurante.services;
 
 import br.com.fiap.restaurante.restaurante.entities.Address;
 import br.com.fiap.restaurante.restaurante.entities.User;
+import br.com.fiap.restaurante.restaurante.repositories.RestaurantRepository;
 import br.com.fiap.restaurante.restaurante.repositories.UserRepository;
-import dtos.AddressResponse;
-import dtos.CreateUserRequest;
-import dtos.UpdateUserRequest;
-import dtos.UserResponse;
+import dtos.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,21 +12,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     public final UserRepository userRepository;
+    public final RestaurantRepository restaurantRepository;
 
     public UserResponse createUser(CreateUserRequest request) {
-        if(userRepository.existsByEmail(request.email())) {
-            throw new RuntimeException("Email already registered");
-        }
-
-        if(userRepository.existsByLogin(request.login())) {
-            throw new RuntimeException("Login already registered");
-        }
+        validateUniqueFields(request.email(), request.login());
 
         User user = User.builder()
                 .name(request.name())
@@ -50,20 +44,7 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
-        return new UserResponse(
-                savedUser.getId(),
-                savedUser.getName(),
-                savedUser.getEmail(),
-                savedUser.getLogin(),
-                new AddressResponse(
-                        savedUser.getAddress().getStreet(),
-                        savedUser.getAddress().getNumber(),
-                        savedUser.getAddress().getCity(),
-                        savedUser.getAddress().getState(),
-                        savedUser.getAddress().getZipCode()
-                        ),
-                savedUser.getUserType()
-        );
+        return UserResponse.fromEntity(savedUser);
     }
 
     public UserResponse updateUser(Long id, UpdateUserRequest request) {
@@ -89,44 +70,20 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
-        return new UserResponse(
-                savedUser.getId(),
-                savedUser.getName(),
-                savedUser.getEmail(),
-                savedUser.getLogin(),
-                new AddressResponse(
-                        savedUser.getAddress().getStreet(),
-                        savedUser.getAddress().getNumber(),
-                        savedUser.getAddress().getCity(),
-                        savedUser.getAddress().getState(),
-                        savedUser.getAddress().getZipCode()
-                ),
-                savedUser.getUserType()
-        );
+       return UserResponse.fromEntity(savedUser);
     }
 
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        userRepository.delete(user);
-    }
+        if (restaurantRepository.existsByOwnerId(id)) {
+            throw new RuntimeException(
+                    "User cannot be deleted because owns one or more restaurants"
+            );
+        }
 
-    private UserResponse toResponse(User user) {
-        return new UserResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getLogin(),
-                new AddressResponse(
-                        user.getAddress().getStreet(),
-                        user.getAddress().getNumber(),
-                        user.getAddress().getCity(),
-                        user.getAddress().getState(),
-                        user.getAddress().getZipCode()
-                ),
-                user.getUserType()
-        );
+        userRepository.delete(user);
     }
 
     public UserResponse findUserById(Long id) {
@@ -134,7 +91,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return toResponse(user);
+        return UserResponse.fromEntity(user);
     }
 
     public Page<UserResponse> findAllUsers(int page, int size) {
@@ -142,6 +99,34 @@ public class UserService {
         Pageable pageable = PageRequest.of(page, size);
 
         return userRepository.findAll(pageable)
-                .map(this::toResponse);
+                .map(UserResponse::fromEntity);
+    }
+
+    public List<UserResponse> findByName(String name) {
+        return userRepository.findByNameContainingIgnoreCase(name)
+                .stream()
+                .map(UserResponse::fromEntity)
+                .toList();
+    }
+
+    private void validateUniqueFields(String email, String login) {
+        if (userRepository.existsByEmail(email)) {
+            throw new RuntimeException("Email already registered");
+        }
+
+        if (userRepository.existsByLogin(login)) {
+            throw new RuntimeException("Login already registered");
+        }
+    }
+
+    public UserResponse validateLogin(LoginRequest request) {
+        User user = userRepository.findByLogin(request.login())
+                .orElseThrow(() -> new RuntimeException("Invalid login or password"));
+
+        if (!user.getPassword().equals(request.password())) {
+            throw new RuntimeException("Invalid login or password");
+        }
+
+        return UserResponse.fromEntity(user);
     }
 }

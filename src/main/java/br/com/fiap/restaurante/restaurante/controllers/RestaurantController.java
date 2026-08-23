@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/restaurants")
+@RequestMapping("/v1/restaurants")
 @RequiredArgsConstructor
 public class RestaurantController {
     private final RestaurantService restaurantService;

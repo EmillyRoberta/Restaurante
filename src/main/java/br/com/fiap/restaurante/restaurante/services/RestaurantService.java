@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RestaurantService {
@@ -84,6 +86,20 @@ public class RestaurantService {
                 restaurant.getDescription(),
                 restaurant.getOwner().getId()
         );
+    }
+
+    public List<RestaurantResponse> findByOwner(User owner) {
+        return restaurantRepository.findByOwner(owner)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    public List<RestaurantResponse> findByName(String name) {
+        return restaurantRepository.findByNameContainingIgnoreCase(name)
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 }
 
