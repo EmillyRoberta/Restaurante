@@ -27,7 +27,7 @@ public record CreateUserRequest(
         @NotNull
         UserType userType
 ) {
-        
+
     @Override
     public String toString() {
         return "CreateUserRequest{" +

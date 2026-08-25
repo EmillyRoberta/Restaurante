@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         info = @Info(
                 title = "Restaurant API Documentation",
                 version = "1.0",
-                description = "Here is the documentation of the Restaurants' API."
+                description = "Restaurants' API documentation. To access the JSON API documentation, see the path 'api-docs'."
         )
 )
 @SpringBootApplication

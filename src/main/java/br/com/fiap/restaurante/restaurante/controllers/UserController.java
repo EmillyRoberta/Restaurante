@@ -36,12 +36,11 @@ public class UserController {
             }
     )
     @PostMapping("/save")
-    public ResponseEntity<String> createUser(
+    public ResponseEntity<UserResponse> createUser(
             @Valid @RequestBody CreateUserRequest request) {
         LOGGER.info("/save - " + request.toString());
-        userService.createUser(request);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
     }
 
     @Operation(description = "Updates user data. E-mail and login must be unique.",
@@ -64,7 +63,7 @@ public class UserController {
     @Operation(description = "Deletes user.",
             summary = "Deletes user.",
             responses = {
-                    @ApiResponse(description = "User created successfully.", responseCode = HttpStatusCode.OK),
+                    @ApiResponse(description = "User deleted successfully.", responseCode = HttpStatusCode.OK),
                     @ApiResponse(description = "User cannot be deleted because owns one or more restaurants.",
                             responseCode = HttpStatusCode.UNPROCESSABLE_CONTENT)
             }
@@ -74,7 +73,7 @@ public class UserController {
             @PathVariable Long id
     ) {
         userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @Operation(description = "Lists all users.",

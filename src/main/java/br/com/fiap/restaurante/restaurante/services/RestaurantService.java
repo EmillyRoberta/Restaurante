@@ -4,6 +4,7 @@ import br.com.fiap.restaurante.restaurante.entities.Restaurant;
 import br.com.fiap.restaurante.restaurante.entities.User;
 import br.com.fiap.restaurante.restaurante.repositories.RestaurantRepository;
 import br.com.fiap.restaurante.restaurante.repositories.UserRepository;
+import br.com.fiap.restaurante.restaurante.services.exceptions.ResourceNotFoundException;
 import dtos.CreateRestaurantRequest;
 import dtos.RestaurantResponse;
 import dtos.UpdateRestaurantRequest;
@@ -24,7 +25,7 @@ public class RestaurantService {
     public RestaurantResponse createRestaurant(CreateRestaurantRequest request) {
 
         User owner = userRepository.findById(request.ownerId())
-                .orElseThrow(() -> new RuntimeException("Owner not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Owner not found"));
 
         Restaurant restaurant = Restaurant.builder()
                 .name(request.name())
@@ -40,10 +41,10 @@ public class RestaurantService {
     public RestaurantResponse updateRestaurant(Long id, UpdateRestaurantRequest request) {
 
         Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
 
         User owner = userRepository.findById(request.ownerId())
-                .orElseThrow(() -> new RuntimeException("Owner not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Owner not found"));
 
         restaurant.setName(request.name());
         restaurant.setDescription(request.description());
@@ -57,7 +58,7 @@ public class RestaurantService {
     public void deleteRestaurant(Long id) {
 
         Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
 
         restaurantRepository.delete(restaurant);
     }
@@ -65,7 +66,7 @@ public class RestaurantService {
     public RestaurantResponse findRestaurantById(Long id) {
 
         Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
 
         return toResponse(restaurant);
     }
