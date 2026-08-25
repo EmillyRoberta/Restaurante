@@ -6,19 +6,19 @@ import jakarta.validation.constraints.NotNull;
 
 public record CreateUserRequest(
         @NotNull
-        @NotBlank(message="Name is required")
+        @NotBlank(message = "Name is required")
         String name,
 
         @NotNull
-        @NotBlank(message="Email is required")
+        @NotBlank(message = "Email is required")
         String email,
 
         @NotNull
-        @NotBlank(message="Login is required")
+        @NotBlank(message = "Login is required")
         String login,
 
         @NotNull
-        @NotBlank(message="Password is required")
+        @NotBlank(message = "Password is required")
         String password,
 
         @NotNull
@@ -27,4 +27,16 @@ public record CreateUserRequest(
         @NotNull
         UserType userType
 ) {
+        
+    @Override
+    public String toString() {
+        return "CreateUserRequest{" +
+               "name='" + name + '\'' +
+               ", email='" + email + '\'' +
+               ", login='" + login + '\'' +
+               ", password='[PROTECTED]'" +
+               ", address=" + address +
+               ", userType=" + userType +
+               '}';
+    }
 }
