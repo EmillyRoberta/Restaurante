@@ -77,6 +77,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 		<!-- JUnit -->
 		<dependency>
 			<!-- this is needed or IntelliJ gives junit.jar or platform:junit-platform-launcher:6.0 not found errors -->
