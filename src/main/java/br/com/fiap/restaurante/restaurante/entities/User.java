@@ -35,4 +35,9 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserType userType;
+
+    @PrePersist @PreUpdate
+    public void updateLastUpdate() {
+        this.lastUpdate = LocalDateTime.now();
+    }
 }
