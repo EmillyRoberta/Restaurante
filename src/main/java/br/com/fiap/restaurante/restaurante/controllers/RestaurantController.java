@@ -9,6 +9,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -59,8 +62,8 @@ public class RestaurantController {
     )
     @GetMapping
     public ResponseEntity<Page<RestaurantResponse>> findAll(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "0") @PositiveOrZero int page,
+            @RequestParam(defaultValue = "10") @Positive int size
     ) {
         return ResponseEntity.ok(
                 restaurantService.findAllRestaurants(page, size)
@@ -93,7 +96,7 @@ public class RestaurantController {
     )
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRestaurant(
-            @PathVariable Long id
+            @PathVariable @Positive @NotNull Long id
     ) {
         restaurantService.deleteRestaurant(id);
 

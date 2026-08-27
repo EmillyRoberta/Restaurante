@@ -5,26 +5,22 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateUserRequest(
-        @NotNull
-        @NotBlank(message = "Name is required")
+        @NotBlank(message = "'name' is required")
         String name,
 
-        @NotNull
-        @NotBlank(message = "Email is required")
+        @NotBlank(message = "'email' is required")
         String email,
 
-        @NotNull
-        @NotBlank(message = "Login is required")
+        @NotBlank(message = "'login' is required")
         String login,
 
-        @NotNull
-        @NotBlank(message = "Password is required")
+        @NotBlank(message = "'password' is required")
         String password,
 
-        @NotNull
+        @NotNull(message = "'address' is required")
         AddressRequest address,
 
-        @NotNull
+        @NotNull(message = "'userType' is required")
         UserType userType
 ) {
 
