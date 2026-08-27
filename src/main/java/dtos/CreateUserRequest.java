@@ -3,30 +3,38 @@ package dtos;
 import br.com.fiap.restaurante.restaurante.entities.UserType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public record CreateUserRequest(
-        @NotNull
-        @NotBlank(message="Name is required")
+        @NotBlank(message = "'name' is required")
         String name,
 
-        @NotNull
-        @NotBlank(message="Email is required")
+        @NotBlank(message = "'email' is required")
         String email,
 
-        @NotNull
-        @NotBlank(message="Login is required")
+        @NotBlank(message = "'login' is required")
         String login,
 
-        @NotNull
-        @NotBlank(message="Password is required")
+        @NotBlank(message = "'password' is required")
+        @Size(min = 6, max = 15, message = "'oldPassword' must be between {min} and {max} characters long")
         String password,
 
-        @NotNull
-        @NotBlank(message="Address is required")
+        @NotNull(message = "'address' is required")
         AddressRequest address,
 
-        @NotNull
-        @NotBlank(message="User type is required")
+        @NotNull(message = "'userType' is required")
         UserType userType
 ) {
+
+    @Override
+    public String toString() {
+        return "CreateUserRequest{" +
+               "name='" + name + '\'' +
+               ", email='" + email + '\'' +
+               ", login='" + login + '\'' +
+               ", password='[PROTECTED]'" +
+               ", address=" + address +
+               ", userType=" + userType +
+               '}';
+    }
 }

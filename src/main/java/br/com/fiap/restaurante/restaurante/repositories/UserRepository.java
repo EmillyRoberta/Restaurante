@@ -1,6 +1,7 @@
 package br.com.fiap.restaurante.restaurante.repositories;
 
 import br.com.fiap.restaurante.restaurante.entities.User;
+import dtos.UserResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
