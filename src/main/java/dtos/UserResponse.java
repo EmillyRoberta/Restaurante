@@ -2,6 +2,7 @@ package dtos;
 
 import br.com.fiap.restaurante.restaurante.entities.User;
 import br.com.fiap.restaurante.restaurante.entities.UserType;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -18,7 +19,7 @@ public record UserResponse(
         @NotBlank(message = "'login' is required")
         String login,
 
-        @NotNull(message = "'address' is required")
+        @Nullable
         AddressResponse address,
 
         @NotNull(message = "'userType' is required")

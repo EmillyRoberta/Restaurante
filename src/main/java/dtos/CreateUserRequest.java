@@ -3,6 +3,7 @@ package dtos;
 import br.com.fiap.restaurante.restaurante.entities.UserType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public record CreateUserRequest(
         @NotBlank(message = "'name' is required")
@@ -15,6 +16,7 @@ public record CreateUserRequest(
         String login,
 
         @NotBlank(message = "'password' is required")
+        @Size(min = 6, max = 15, message = "'oldPassword' must be between {min} and {max} characters long")
         String password,
 
         @NotNull(message = "'address' is required")

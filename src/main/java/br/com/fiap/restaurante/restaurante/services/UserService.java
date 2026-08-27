@@ -7,11 +7,9 @@ import br.com.fiap.restaurante.restaurante.repositories.UserRepository;
 import br.com.fiap.restaurante.restaurante.services.exceptions.BusinessException;
 import br.com.fiap.restaurante.restaurante.services.exceptions.NonUniqueFieldException;
 import br.com.fiap.restaurante.restaurante.services.exceptions.ResourceNotFoundException;
-import dtos.CreateUserRequest;
-import dtos.LoginRequest;
-import dtos.UpdateUserRequest;
-import dtos.UserResponse;
+import dtos.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +26,7 @@ public class UserService {
     public final RestaurantRepository restaurantRepository;
 
     public UserResponse createUser(CreateUserRequest request) {
-        validateUniqueFields(request.email(), request.login());
+        validateUniqueFields(request.email(), request.login(), null);
 
         User user = User.builder()
                         .name(request.name())
@@ -54,9 +52,10 @@ public class UserService {
     }
 
     public UserResponse updateUser(Long id, UpdateUserRequest request) {
-
         User user = userRepository.findById(id)
                                   .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        validateUniqueFields(request.email(), request.login(), id);
 
         user.setName(request.name());
         user.setEmail(request.email());
@@ -115,24 +114,49 @@ public class UserService {
                              .toList();
     }
 
-    private void validateUniqueFields(String email, String login) throws NonUniqueFieldException {
-        if (userRepository.existsByEmail(email)) {
+    private void validateUniqueFields(String email, String login, Long userId) throws NonUniqueFieldException {
+        validateEmailPattern(email);
+
+        //TODO: otimizar essas validações de email e login em uma melhoria futura.
+        var userByEmail = userRepository.findByEmail(email);
+        if (userByEmail.isPresent() && !userByEmail.get().getId().equals(userId)) {
             throw new NonUniqueFieldException("Error: Email already registered");
         }
 
-        if (userRepository.existsByLogin(login)) {
+        var userByLogin = userRepository.findByLogin(login);
+        if (userByLogin.isPresent() && !userByLogin.get().getId().equals(userId)) {
             throw new NonUniqueFieldException("Error: Login already registered");
         }
     }
 
+    public void validateEmailPattern(String email) throws BusinessException {
+        if (!EmailValidator.getInstance().isValid(email)) {
+            throw new BusinessException("Error: Invalid Email format.");
+        }
+    }
+
     public UserResponse validateLogin(LoginRequest request) throws LoginException {
-        User user = userRepository.findByLogin(request.login())
-                                  .orElseThrow(() -> new LoginException("Invalid login or password"));
+        User user = findUserByLogin(request.login());
 
         if (!user.getPassword().equals(request.password())) {
             throw new LoginException("Invalid login or password");
         }
 
         return UserResponse.fromEntity(user);
+    }
+
+    public UserResponse changePassword(ChangePasswordRequest request) throws BusinessException, LoginException {
+        User user = findUserByLogin(request.login());
+        LoginRequest loginRequest = new LoginRequest(request.login(), request.oldPassword());
+        validateLogin(loginRequest);
+
+        user.setPassword(request.newPassword());
+
+        return UserResponse.fromEntity(userRepository.save(user));
+    }
+
+    public User findUserByLogin(String login) throws LoginException {
+        return userRepository.findByLogin(login)
+                             .orElseThrow(() -> new LoginException("Invalid login"));
     }
 }

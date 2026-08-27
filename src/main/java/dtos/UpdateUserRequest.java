@@ -13,7 +13,7 @@ public record UpdateUserRequest(
         @NotBlank(message = "'login' is required")
         String login,
 
-        @NotNull
+        @NotNull(message = "'address' is required")
         AddressRequest address
 ) {
 

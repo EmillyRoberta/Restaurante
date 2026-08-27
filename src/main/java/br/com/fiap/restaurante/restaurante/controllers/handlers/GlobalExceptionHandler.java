@@ -1,28 +1,33 @@
 package br.com.fiap.restaurante.restaurante.controllers.handlers;
 
+import br.com.fiap.restaurante.restaurante.entities.UserType;
 import br.com.fiap.restaurante.restaurante.services.exceptions.BusinessException;
 import br.com.fiap.restaurante.restaurante.services.exceptions.NonUniqueFieldException;
 import br.com.fiap.restaurante.restaurante.services.exceptions.ResourceNotFoundException;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
+import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import tools.jackson.databind.exc.InvalidFormatException;
 
 import javax.security.auth.login.LoginException;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
-public class ControllerExceptionHandler {
+@RestControllerAdvice
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ControllerExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(NonUniqueFieldException.class)
     public ProblemDetail handlerNonUniqueFieldException(
@@ -55,16 +60,16 @@ public class ControllerExceptionHandler {
         return buildProblemDetail(HttpStatus.UNPROCESSABLE_CONTENT, businessException);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ProblemDetail handlerMethodArgumentNotValidException(
-            MethodArgumentNotValidException ex) {
+    @Override
+    protected @Nullable ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         LOGGER.info(ex.getMessage());
 
-        ProblemDetail body = ex.getBody();
+        var problemDetail = ex.getBody();
 
-        body.setTitle("Validation Failed");
-        body.setDetail("One or more fields failed validation checks.");
-        body.setStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle("Validation Failed");
+        problemDetail.setDetail("One or more fields failed validation checks.");
+        problemDetail.setStatus(HttpStatus.BAD_REQUEST);
 
         // Extract invalid fields cleanly into a structured map
         Map<String, String> validationErrors = ex.getBindingResult().getFieldErrors().stream()
@@ -76,25 +81,19 @@ public class ControllerExceptionHandler {
                                                  ));
 
         // Add extensions to RFC 7807 structure
-        body.setProperty("invalid_fields", validationErrors);
+        problemDetail.setProperty("invalid_fields", validationErrors);
 
-        return body;
+        return new ResponseEntity<>(problemDetail, status);
     }
 
-    @ExceptionHandler(HandlerMethodValidationException.class)
-    public ProblemDetail handlerMethodValidationException(
-            HandlerMethodValidationException ex) {
+    @Override
+    protected ResponseEntity<Object> handleHandlerMethodValidationException(
+            HandlerMethodValidationException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
         LOGGER.info(ex.getMessage());
+        var problemDetail = buildProblemDetail(HttpStatus.BAD_REQUEST, ex);
 
-        return buildProblemDetail(HttpStatus.BAD_REQUEST, ex);
-    }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ProblemDetail handlerHttpMessageNotReadableException(
-            HttpMessageNotReadableException ex) {
-        LOGGER.info(ex.getMessage());
-
-        return buildProblemDetail(HttpStatus.BAD_REQUEST, ex);
+        return new ResponseEntity<>(problemDetail, status);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -103,6 +102,28 @@ public class ControllerExceptionHandler {
         LOGGER.info(ex.getMessage());
 
         return buildProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+    }
+
+
+    //  Exceptions that are managed by 'ResponseEntityExceptionHandler' must be overriden, so they can be used with Problem Detail.
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+                                                                  HttpHeaders headers, HttpStatusCode status,
+                                                                  WebRequest request) {
+        LOGGER.info("Validation error list : " + ex.getMessage());
+        ProblemDetail body = buildProblemDetail(HttpStatus.BAD_REQUEST, ex);
+        Throwable cause = ex.getCause();
+
+        if (cause instanceof InvalidFormatException invalidFormat) {
+            if (invalidFormat.getTargetType().isEnum()) {
+                String fieldName = invalidFormat.getPath().get(0).getPropertyName();
+                String rejectedValue = invalidFormat.getValue().toString();
+                body.setDetail("Invalid value '" + rejectedValue + "' for field '" + fieldName +
+                               "'. Expected values are: " + Arrays.toString(UserType.values()));
+            }
+        }
+
+        return new ResponseEntity<>(body, status);
     }
 
     private ProblemDetail buildProblemDetail(HttpStatus httpStatus, RuntimeException ex) {

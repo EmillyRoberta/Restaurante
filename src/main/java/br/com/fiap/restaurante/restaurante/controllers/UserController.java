@@ -2,11 +2,13 @@ package br.com.fiap.restaurante.restaurante.controllers;
 
 import br.com.fiap.restaurante.restaurante.controllers.types.HttpStatusCode;
 import br.com.fiap.restaurante.restaurante.services.UserService;
+import dtos.ChangePasswordRequest;
 import dtos.CreateUserRequest;
-import dtos.LoginRequest;
 import dtos.UpdateUserRequest;
 import dtos.UserResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -15,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +35,8 @@ public class UserController {
             summary = "Creates new user.",
             responses = {
                     @ApiResponse(description = "User created successfully.", responseCode = HttpStatusCode.CREATED),
-                    @ApiResponse(description = "Invalid request.", responseCode = HttpStatusCode.BAD_REQUEST)
+                    @ApiResponse(description = "Invalid request.", responseCode = HttpStatusCode.BAD_REQUEST,
+                            content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
             }
     )
     @PostMapping("/save")
@@ -47,23 +51,29 @@ public class UserController {
             summary = "Updates user data.",
             responses = {
                     @ApiResponse(description = "User updated successfully.", responseCode = HttpStatusCode.OK),
-                    @ApiResponse(description = "User not found.", responseCode = HttpStatusCode.NOT_FOUND)
+                    @ApiResponse(description = "User not found.", responseCode = HttpStatusCode.NOT_FOUND,
+                            content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
+                    @ApiResponse(description = "Invalid request.", responseCode = HttpStatusCode.BAD_REQUEST,
+                            content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
             }
     )
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUser(
+    public ResponseEntity<UserResponse> updateUser(
             @PathVariable Long id,
             @Valid @RequestBody UpdateUserRequest request
     ) {
         LOGGER.info("Update User - " + request.toString());
+
         userService.updateUser(id, request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(userService.updateUser(id, request));
     }
 
     @Operation(description = "Deletes user.",
             summary = "Deletes user.",
             responses = {
                     @ApiResponse(description = "User deleted successfully.", responseCode = HttpStatusCode.OK),
+                    @ApiResponse(description = "User not found.", responseCode = HttpStatusCode.NOT_FOUND,
+                            content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
                     @ApiResponse(description = "User cannot be deleted because owns one or more restaurants.",
                             responseCode = HttpStatusCode.UNPROCESSABLE_CONTENT)
             }
@@ -77,10 +87,10 @@ public class UserController {
     }
 
     @Operation(description = "Lists all users.",
-            summary = "Lists all users.")
-    @ApiResponses(value = {
-            @ApiResponse(description = "Success.", responseCode = HttpStatusCode.OK)
-    }
+            summary = "Lists all users.",
+            responses = {
+                    @ApiResponse(description = "Success.", responseCode = HttpStatusCode.OK)
+            }
     )
     @GetMapping
     public ResponseEntity<Page<UserResponse>> findAll(
@@ -105,10 +115,11 @@ public class UserController {
     }
 
     @Operation(description = "Search user by name.",
-            summary = "Search user by name.")
-    @ApiResponses(value = {
-            @ApiResponse(description = "Success.", responseCode = HttpStatusCode.OK)
-    }
+            summary = "Search user by name.",
+            responses = {
+                    @ApiResponse(description = "Success.", responseCode = HttpStatusCode.OK),
+                    @ApiResponse(description = "User not found.", responseCode = HttpStatusCode.NOT_FOUND)
+            }
     )
     @GetMapping("/search")
     public ResponseEntity<List<UserResponse>> searchByName(
@@ -116,17 +127,18 @@ public class UserController {
         return ResponseEntity.ok(userService.findByName(name));
     }
 
-    @Operation(description = "Authenticates.",
-            summary = "Authenticates.")
-    @ApiResponses(value = {
-            @ApiResponse(description = "Success.", responseCode = HttpStatusCode.OK),
-            @ApiResponse(description = "Login or password does not match.", responseCode = HttpStatusCode.UNAUTHORIZED)
-    }
+    @Operation(description = "Change password.",
+            summary = "Change password.",
+            responses = {
+                    @ApiResponse(description = "Password updated.", responseCode = HttpStatusCode.OK),
+                    @ApiResponse(description = "Invalid request.", responseCode = HttpStatusCode.BAD_REQUEST,
+                            content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
+            }
     )
-    @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(
-            @Valid @RequestBody LoginRequest request) throws LoginException {
-
-        return ResponseEntity.ok(userService.validateLogin(request));
+    @PutMapping("/change-password")
+    public ResponseEntity<UserResponse> changePassword(
+            @Valid @RequestBody ChangePasswordRequest request) throws LoginException {
+        return ResponseEntity.ok(userService.changePassword(request));
     }
+
 }
