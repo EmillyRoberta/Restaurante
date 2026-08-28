@@ -1,0 +1,1599 @@
+{
+  "info": {
+    "_postman_id": "680b16d9-6cd0-4940-a468-b6f1f0e0649d",
+    "name": "Restaurante",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57565348",
+    "_collection_link": "https://go.postman.co/collection/57565348-680b16d9-6cd0-4940-a468-b6f1f0e0649d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "CRUD",
+          "item": [
+            {
+              "name": "Create User",
+              "item": [
+                {
+                  "name": "Create User - Owner",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"owner\",\r\n    \"email\": \"owner@email.com\",\r\n    \"login\": \"owner\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"RESTAURANT_OWNER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Create User - Customer",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"João Donald\",\r\n    \"email\": \"donald@email.com\",\r\n    \"login\": \"donald\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XVI de Novembro\",\r\n        \"number\": \"101\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-11\"\r\n    },\r\n    \"userType\": \"CUSTOMER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Update User",
+              "item": [
+                {
+                  "name": "1 - Create user",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "// 1. Parse the JSON response body\r\nconst responseData = pm.response.json();\r\n\r\n// 2. Extract the specific attribute (e.g., an 'id' or 'token')\r\nconst attributeValue = responseData.id; \r\n\r\n// 3. Save it to a collection variable (recommended) or environment variable\r\npm.collectionVariables.set(\"sharedAttribute\", attributeValue);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"John Restaurante\",\r\n    \"email\": \"johnrestaurante@email.com\",\r\n    \"login\": \"johnrestaurante\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"CUSTOMER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "2 - Update User",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"John Restaurante Updated\",\r\n    \"email\": \"johnrestaurante@email.com\",\r\n    \"login\": \"johnrestaurante\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"CUSTOMER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/{{sharedAttribute}}",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "{{sharedAttribute}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Delete User",
+              "item": [
+                {
+                  "name": "1 - Create User",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "// 1. Parse the JSON response body\r\nconst responseData = pm.response.json();\r\n\r\n// 2. Extract the specific attribute (e.g., an 'id' or 'token')\r\nconst attributeValue = responseData.id; \r\n\r\n// 3. Save it to a collection variable (recommended) or environment variable\r\npm.collectionVariables.set(\"sharedAttribute\", attributeValue);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"João Silva\",\r\n    \"email\": \"silva@email.com\",\r\n    \"login\": \"silva\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XVI de Novembro\",\r\n        \"number\": \"101\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-11\"\r\n    },\r\n    \"userType\": \"CUSTOMER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "2 - Delete User",
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/{{sharedAttribute}}",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "{{sharedAttribute}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Get User",
+              "item": [
+                {
+                  "name": "Get By ID",
+                  "item": [
+                    {
+                      "name": "1 - Create User",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "// 1. Parse the JSON response body\r\nconst responseData = pm.response.json();\r\n\r\n// 2. Extract the specific attribute (e.g., an 'id' or 'token')\r\nconst attributeValue = responseData.id; \r\n\r\n// 3. Save it to a collection variable (recommended) or environment variable\r\npm.collectionVariables.set(\"sharedAttribute\", attributeValue);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n    \"name\": \"Marcos Teixeira\",\r\n    \"email\": \"teixeira@email.com\",\r\n    \"login\": \"teixeira\",\r\n    \"password\": \"123456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XVI de Novembro\",\r\n        \"number\": \"101\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-11\"\r\n    },\r\n    \"userType\": \"CUSTOMER\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "http://{{host}}:{{port}}/v1/users/save",
+                          "protocol": "http",
+                          "host": [
+                            "{{host}}"
+                          ],
+                          "port": "{{port}}",
+                          "path": [
+                            "v1",
+                            "users",
+                            "save"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "2 - Get user by Id",
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "http://{{host}}:{{port}}/v1/users/{{sharedAttribute}}",
+                          "protocol": "http",
+                          "host": [
+                            "{{host}}"
+                          ],
+                          "port": "{{port}}",
+                          "path": [
+                            "v1",
+                            "users",
+                            "{{sharedAttribute}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Get users",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users?page=0&size=10",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users"
+                      ],
+                      "query": [
+                        {
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "key": "size",
+                          "value": "10"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Change Password",
+              "item": [
+                {
+                  "name": "1 - Create User",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Maria Owner\",\r\n    \"email\": \"maria@email.com\",\r\n    \"login\": \"maria\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"RESTAURANT_OWNER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "2 - Change Password",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"login\": \"maria\",\r\n    \"oldPassword\": \"1233456\",\r\n    \"newPassword\": \"12345678\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/change-password",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "change-password"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Login",
+              "item": [
+                {
+                  "name": "1 - Create User",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Maria Login\",\r\n    \"email\": \"marialogin@email.com\",\r\n    \"login\": \"marialogin\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"RESTAURANT_OWNER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "2 - Login",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"login\": \"marialogin\",\r\n    \"password\": \"1233456\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/auth/login",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Validations",
+          "item": [
+            {
+              "name": "Create User (Bad Request)",
+              "item": [
+                {
+                  "name": "1 - Create user",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Owner Restaurante\",\r\n    \"email\": \"ownerrestaurante@email.com\",\r\n    \"login\": \"ownerrestaurante\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"RESTAURANT_OWNER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "2 - POST save - Validation error - wrong user type",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Owner Restaurante\",\r\n    \"email\": \"ownerrestaurante@email.com\",\r\n    \"login\": \"ownerrestaurante\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"Bla\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "3 - POST save - Validation error - missing  mandatory fields",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Owner Restaurante\",\r\n    \"email\": null,\r\n    \"login\": \"\",\r\n    \"password\": \"123\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"RESTAURANT_OWNER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "4 - POST save - Validation error - Non unique email",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n\"name\": \"Owner Restaurante\",\r\n    \"email\": \"ownerrestaurante@email.com\",\r\n    \"login\": \"ownerrestaurante2\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"RESTAURANT_OWNER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "5 - POST save - Validation error - Non unique login",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Owner Restaurante\",\r\n    \"email\": \"ownerrestaurante2@email.com\",\r\n    \"login\": \"ownerrestaurante\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"RESTAURANT_OWNER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Update User",
+              "item": [
+                {
+                  "name": "1 - Create user",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "// 1. Parse the JSON response body\r\nconst responseData = pm.response.json();\r\n\r\n// 2. Extract the specific attribute (e.g., an 'id' or 'token')\r\nconst attributeValue = responseData.id; \r\n\r\n// 3. Save it to a collection variable (recommended) or environment variable\r\npm.collectionVariables.set(\"sharedAttribute\", attributeValue);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"John Restaurante validation\",\r\n    \"email\": \"johnvalidation@email.com\",\r\n    \"login\": \"johnvalidation\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"CUSTOMER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "2 - Update User - Not Found - user not found",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"owner\",\r\n    \"email\": \"owner@email.com\",\r\n    \"login\": \"owner\",    \r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    }\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/0",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "0"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "2 - Update User - Bad request - missing mandatory fields",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"owner\",  \r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    }\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/{{sharedAttribute}}",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "{{sharedAttribute}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Delete User",
+              "item": [
+                {
+                  "name": "DELETE User",
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/{{id}}",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "{{id}}"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "name": "DELETE User - Not Found",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "http://{{host}}:{{port}}/v1/users/0",
+                          "protocol": "http",
+                          "host": [
+                            "{{host}}"
+                          ],
+                          "port": "{{port}}",
+                          "path": [
+                            "v1",
+                            "users",
+                            "0"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": null,
+                      "cookie": [],
+                      "body": ""
+                    },
+                    {
+                      "name": "DELETE User - Unprocessable Content - dependency with restaurant",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n    \"name\": \"owner\",\r\n    \"email\": \"owner@email.com\",\r\n    \"login\": \"owner\",    \r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    }\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "http://{{host}}:{{port}}/v1/users/{{id}}",
+                          "protocol": "http",
+                          "host": [
+                            "{{host}}"
+                          ],
+                          "port": "{{port}}",
+                          "path": [
+                            "v1",
+                            "users",
+                            "{{id}}"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": null,
+                      "cookie": [],
+                      "body": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Change Password (Invalid Old Password)",
+              "item": [
+                {
+                  "name": "1 - Create User",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Maria Owner 2\",\r\n    \"email\": \"maria2@email.com\",\r\n    \"login\": \"maria2\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"RESTAURANT_OWNER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "2 - Change Password",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"login\": \"maria2\",\r\n    \"oldPassword\": \"123345600\",\r\n    \"newPassword\": \"12345678\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/change-password",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "change-password"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Get User",
+              "item": [
+                {
+                  "name": "Get user - Not Found",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/0",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "0"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Login Invalid",
+              "item": [
+                {
+                  "name": "Login",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"login\": \"user unknown\",\r\n    \"password\": \"11111111\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/auth/login",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Restaurantes",
+      "item": [
+        {
+          "name": "CRUD",
+          "item": [
+            {
+              "name": "Create",
+              "item": [
+                {
+                  "name": "1 - Create User",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "// 1. Parse the JSON response body\r\nconst responseData = pm.response.json();\r\n\r\n// 2. Extract the specific attribute (e.g., an 'id' or 'token')\r\nconst attributeValue = responseData.id; \r\n\r\n// 3. Save it to a collection variable (recommended) or environment variable\r\npm.collectionVariables.set(\"sharedAttribute\", attributeValue);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Mario Owner\",\r\n    \"email\": \"marioowner@email.com\",\r\n    \"login\": \"marioowner\",\r\n    \"password\": \"123456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XVI de Novembro\",\r\n        \"number\": \"101\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-11\"\r\n    },\r\n    \"userType\": \"RESTAURANT_OWNER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "2 - Create Restaurante",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Restaurante Kiko Kilo\",\r\n    \"description\": \"Open de refrescos\",\r\n    \"ownerId\": {{sharedAttribute}}\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/restaurants",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "restaurants"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Update",
+              "item": [
+                {
+                  "name": "1 - Create user",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "// 1. Parse the JSON response body\r\nconst responseData = pm.response.json();\r\n\r\n// 2. Extract the specific attribute (e.g., an 'id' or 'token')\r\nconst attributeValue = responseData.id; \r\n\r\n// 3. Save it to a collection variable (recommended) or environment variable\r\npm.collectionVariables.set(\"sharedAttribute\", attributeValue);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"John Jhon\",\r\n    \"email\": \"john123@email.com\",\r\n    \"login\": \"john123\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"RESTAURANT_OWNER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "2 - Create Restaurante",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "// 1. Parse the JSON response body\r\nconst responseData = pm.response.json();\r\n\r\n// 2. Extract the specific attribute (e.g., an 'id' or 'token')\r\nconst attributeValue = responseData.id; \r\n\r\n// 3. Save it to a collection variable (recommended) or environment variable\r\npm.collectionVariables.set(\"sharedAttribute\", attributeValue);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Restaurante Duelo\",\r\n    \"description\": \"É biscoito ou bolacha?\",\r\n    \"ownerId\": {{sharedAttribute}}\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/restaurants",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "restaurants"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "3 - Update Restaurante",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Restaurante Revanche\",\r\n    \"description\": \"É biscoito ou bolacha?\",\r\n    \"ownerId\": {{sharedAttribute}}\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/restaurants/{{sharedAttribute}}",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "restaurants",
+                        "{{sharedAttribute}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Delete",
+              "item": [
+                {
+                  "name": "1 - Create user",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "// 1. Parse the JSON response body\r\nconst responseData = pm.response.json();\r\n\r\n// 2. Extract the specific attribute (e.g., an 'id' or 'token')\r\nconst attributeValue = responseData.id; \r\n\r\n// 3. Save it to a collection variable (recommended) or environment variable\r\npm.collectionVariables.set(\"sharedAttribute\", attributeValue);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Mary Maria\",\r\n    \"email\": \"mm@email.com\",\r\n    \"login\": \"mm123\",\r\n    \"password\": \"1233456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XV de Novembro\",\r\n        \"number\": \"100\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-10\"\r\n    },\r\n    \"userType\": \"RESTAURANT_OWNER\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/users/save",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "users",
+                        "save"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "2 - Create Restaurante",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "// 1. Parse the JSON response body\r\nconst responseData = pm.response.json();\r\n\r\n// 2. Extract the specific attribute (e.g., an 'id' or 'token')\r\nconst attributeValue = responseData.id; \r\n\r\n// 3. Save it to a collection variable (recommended) or environment variable\r\npm.collectionVariables.set(\"sharedAttribute\", attributeValue);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Restaurante, Bar, Barbeiro e Psicólogo\",\r\n    \"description\": \"Uber nas horas não vagas\",\r\n    \"ownerId\": {{sharedAttribute}}\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/restaurants",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "restaurants"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "3 - Delete Restaurante",
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/restaurants/{{sharedAttribute}}",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "restaurants",
+                        "{{sharedAttribute}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Get",
+              "item": [
+                {
+                  "name": "Get By ID",
+                  "item": [
+                    {
+                      "name": "1 - Create User",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "// 1. Parse the JSON response body\r\nconst responseData = pm.response.json();\r\n\r\n// 2. Extract the specific attribute (e.g., an 'id' or 'token')\r\nconst attributeValue = responseData.id; \r\n\r\n// 3. Save it to a collection variable (recommended) or environment variable\r\npm.collectionVariables.set(\"sharedAttribute\", attributeValue);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n    \"name\": \"Seu Zé\",\r\n    \"email\": \"seuze@email.com\",\r\n    \"login\": \"seuze\",\r\n    \"password\": \"123456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XVI de Novembro\",\r\n        \"number\": \"101\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-11\"\r\n    },\r\n    \"userType\": \"RESTAURANT_OWNER\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "http://{{host}}:{{port}}/v1/users/save",
+                          "protocol": "http",
+                          "host": [
+                            "{{host}}"
+                          ],
+                          "port": "{{port}}",
+                          "path": [
+                            "v1",
+                            "users",
+                            "save"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "2 - Create Restaurante",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "// 1. Parse the JSON response body\r\nconst responseData = pm.response.json();\r\n\r\n// 2. Extract the specific attribute (e.g., an 'id' or 'token')\r\nconst attributeValue = responseData.id; \r\n\r\n// 3. Save it to a collection variable (recommended) or environment variable\r\npm.collectionVariables.set(\"sharedAttribute\", attributeValue);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n    \"name\": \"Bar do Seu Zé\",\r\n    \"description\": \"Bar do Seu Zé\",\r\n    \"ownerId\": {{sharedAttribute}}\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "http://{{host}}:{{port}}/v1/restaurants",
+                          "protocol": "http",
+                          "host": [
+                            "{{host}}"
+                          ],
+                          "port": "{{port}}",
+                          "path": [
+                            "v1",
+                            "restaurants"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "3 - Get Restaurante by ID",
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "http://{{host}}:{{port}}/v1/restaurants/{{sharedAttribute}}",
+                          "protocol": "http",
+                          "host": [
+                            "{{host}}"
+                          ],
+                          "port": "{{port}}",
+                          "path": [
+                            "v1",
+                            "restaurants",
+                            "{{sharedAttribute}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Get restaurantes",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://{{host}}:{{port}}/v1/restaurants?page=0&size=10",
+                      "protocol": "http",
+                      "host": [
+                        "{{host}}"
+                      ],
+                      "port": "{{port}}",
+                      "path": [
+                        "v1",
+                        "restaurants"
+                      ],
+                      "query": [
+                        {
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "key": "size",
+                          "value": "10"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Validations",
+          "item": [
+            {
+              "name": "Create Restaurant",
+              "item": [
+                {
+                  "name": "Not Owner",
+                  "item": [
+                    {
+                      "name": "1 - Create User",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "// 1. Parse the JSON response body\r\nconst responseData = pm.response.json();\r\n\r\n// 2. Extract the specific attribute (e.g., an 'id' or 'token')\r\nconst attributeValue = responseData.id; \r\n\r\n// 3. Save it to a collection variable (recommended) or environment variable\r\npm.collectionVariables.set(\"sharedAttribute\", attributeValue);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n    \"name\": \"Marcos Customer\",\r\n    \"email\": \"marcoscustomer@email.com\",\r\n    \"login\": \"marcoscustomer\",\r\n    \"password\": \"123456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XVI de Novembro\",\r\n        \"number\": \"101\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-11\"\r\n    },\r\n    \"userType\": \"CUSTOMER\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "http://{{host}}:{{port}}/v1/users/save",
+                          "protocol": "http",
+                          "host": [
+                            "{{host}}"
+                          ],
+                          "port": "{{port}}",
+                          "path": [
+                            "v1",
+                            "users",
+                            "save"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "2 - Create Restaurante - Owner Not Found Copy",
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n    \"name\": \"Restaurante Dom Pepperone\",\r\n    \"description\": \"Comida Italiana\",\r\n    \"ownerId\": {{sharedAttribute}}\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "http://{{host}}:{{port}}/v1/restaurants",
+                          "protocol": "http",
+                          "host": [
+                            "{{host}}"
+                          ],
+                          "port": "{{port}}",
+                          "path": [
+                            "v1",
+                            "restaurants"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Owner Not Found",
+                  "item": [
+                    {
+                      "name": "1 - Create User",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "// 1. Parse the JSON response body\r\nconst responseData = pm.response.json();\r\n\r\n// 2. Extract the specific attribute (e.g., an 'id' or 'token')\r\nconst attributeValue = responseData.id; \r\n\r\n// 3. Save it to a collection variable (recommended) or environment variable\r\npm.collectionVariables.set(\"sharedAttribute\", attributeValue);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n    \"name\": \"Marcos Owner\",\r\n    \"email\": \"marcosowner@email.com\",\r\n    \"login\": \"marcosowner\",\r\n    \"password\": \"123456\",\r\n    \"address\": {\r\n        \"street\": \"Rua XVI de Novembro\",\r\n        \"number\": \"101\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"zipCode\": \"12.3456-11\"\r\n    },\r\n    \"userType\": \"RESTAURANT_OWNER\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "http://{{host}}:{{port}}/v1/users/save",
+                          "protocol": "http",
+                          "host": [
+                            "{{host}}"
+                          ],
+                          "port": "{{port}}",
+                          "path": [
+                            "v1",
+                            "users",
+                            "save"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "2 - Create Restaurante - Owner Not Found",
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n    \"name\": \"Restaurante Dom Pepperone\",\r\n    \"description\": \"Comida Italiana\",\r\n    \"ownerId\": 999999\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "http://{{host}}:{{port}}/v1/restaurants",
+                          "protocol": "http",
+                          "host": [
+                            "{{host}}"
+                          ],
+                          "port": "{{port}}",
+                          "path": [
+                            "v1",
+                            "restaurants"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Delete Restaurante - Not Found",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://{{host}}:{{port}}/v1/restaurants/999999999",
+                  "protocol": "http",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "port": "{{port}}",
+                  "path": [
+                    "v1",
+                    "restaurants",
+                    "999999999"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Restaurante by ID - Not Found",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://{{host}}:{{port}}/v1/restaurants/999999999",
+                  "protocol": "http",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "port": "{{port}}",
+                  "path": [
+                    "v1",
+                    "restaurants",
+                    "999999999"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "sharedAttribute",
+      "value": ""
+    }
+  ]
+}
