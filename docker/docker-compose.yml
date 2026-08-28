@@ -31,7 +31,7 @@ services:
       no_cache: true
       dockerfile: ./docker/application/Dockerfile
     ports:
-      - "8081:8080"
+      - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker #indicates to use the application-docker.properties settings
     depends_on:
