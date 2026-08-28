@@ -128,18 +128,6 @@ public class UserController {
         return ResponseEntity.ok(userService.findByName(name));
     }
 
-    @Operation(description = "Change password.",
-            summary = "Change password.",
-            responses = {
-                    @ApiResponse(description = "Password updated.", responseCode = HttpStatusCode.OK),
-                    @ApiResponse(description = "Invalid request.", responseCode = HttpStatusCode.BAD_REQUEST,
-                            content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
-            }
-    )
-    @PutMapping("/change-password")
-    public ResponseEntity<UserResponse> changePassword(
-            @Valid @RequestBody ChangePasswordRequest request) throws LoginException {
-        return ResponseEntity.ok(userService.changePassword(request));
-    }
+
 
 }

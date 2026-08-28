@@ -3,6 +3,7 @@ package br.com.fiap.restaurante.restaurante.controllers;
 
 import br.com.fiap.restaurante.restaurante.controllers.types.HttpStatusCode;
 import br.com.fiap.restaurante.restaurante.services.UserService;
+import dtos.ChangePasswordRequest;
 import dtos.LoginRequest;
 import dtos.UserResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,10 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.LoginException;
 
@@ -45,5 +43,21 @@ public class AuthController {
 
         UserResponse user = userService.validateLogin(request);
         return ResponseEntity.ok("User " + user.login() + " is logged in.");
+    }
+
+    @Operation(description = "Change password.",
+            summary = "Change password.",
+            responses = {
+                    @ApiResponse(description = "Password updated.", responseCode = HttpStatusCode.OK),
+                    @ApiResponse(description = "Invalid request.", responseCode = HttpStatusCode.BAD_REQUEST,
+                            content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
+            }
+    )
+    @PutMapping("/change-password")
+    public ResponseEntity<UserResponse> changePassword(
+            @Valid @RequestBody ChangePasswordRequest request) throws LoginException {
+
+        LOGGER.info("Login '{}' changed his password.", request.login());
+        return ResponseEntity.ok(userService.changePassword(request));
     }
 }
