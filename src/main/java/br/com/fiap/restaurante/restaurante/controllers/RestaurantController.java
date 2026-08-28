@@ -6,6 +6,8 @@ import dtos.CreateRestaurantRequest;
 import dtos.RestaurantResponse;
 import dtos.UpdateRestaurantRequest;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -15,6 +17,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +31,9 @@ public class RestaurantController {
             summary = "Creates new restaurant.",
             responses = {
                     @ApiResponse(description = "Restaurant created successfully.", responseCode = HttpStatusCode.CREATED),
-                    @ApiResponse(description = "Owner not found.", responseCode = HttpStatusCode.NOT_FOUND)
+                    @ApiResponse(description = "Owner not found.", responseCode = HttpStatusCode.NOT_FOUND),
+                    @ApiResponse(description = "User is not a restaurant owner.", responseCode = HttpStatusCode.UNPROCESSABLE_CONTENT,
+                            content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
             }
     )
     @PostMapping
@@ -74,7 +79,9 @@ public class RestaurantController {
             summary = "Updates restaurant data.",
             responses = {
                     @ApiResponse(description = "Restaurant updated successfully.", responseCode = HttpStatusCode.OK),
-                    @ApiResponse(description = "Restaurant or Owner not found.", responseCode = HttpStatusCode.NOT_FOUND)
+                    @ApiResponse(description = "Restaurant or Owner not found.", responseCode = HttpStatusCode.NOT_FOUND),
+                    @ApiResponse(description = "User is not a restaurant owner.", responseCode = HttpStatusCode.UNPROCESSABLE_CONTENT,
+                            content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
             }
     )
     @PutMapping("/{id}")

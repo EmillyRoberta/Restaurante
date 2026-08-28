@@ -75,7 +75,8 @@ public class UserController {
                     @ApiResponse(description = "User not found.", responseCode = HttpStatusCode.NOT_FOUND,
                             content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
                     @ApiResponse(description = "User cannot be deleted because owns one or more restaurants.",
-                            responseCode = HttpStatusCode.UNPROCESSABLE_CONTENT)
+                            responseCode = HttpStatusCode.UNPROCESSABLE_CONTENT,
+                            content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
             }
     )
     @DeleteMapping("/{id}")

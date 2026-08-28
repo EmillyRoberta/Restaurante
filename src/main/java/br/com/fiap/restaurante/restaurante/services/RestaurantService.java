@@ -2,8 +2,10 @@ package br.com.fiap.restaurante.restaurante.services;
 
 import br.com.fiap.restaurante.restaurante.entities.Restaurant;
 import br.com.fiap.restaurante.restaurante.entities.User;
+import br.com.fiap.restaurante.restaurante.entities.UserType;
 import br.com.fiap.restaurante.restaurante.repositories.RestaurantRepository;
 import br.com.fiap.restaurante.restaurante.repositories.UserRepository;
+import br.com.fiap.restaurante.restaurante.services.exceptions.BusinessException;
 import br.com.fiap.restaurante.restaurante.services.exceptions.ResourceNotFoundException;
 import dtos.CreateRestaurantRequest;
 import dtos.RestaurantResponse;
@@ -26,6 +28,10 @@ public class RestaurantService {
 
         User owner = userRepository.findById(request.ownerId())
                 .orElseThrow(() -> new ResourceNotFoundException("Owner not found"));
+
+        if( owner.getUserType() != UserType.RESTAURANT_OWNER) {
+            throw new BusinessException("User is not a restaurant owner");
+        }
 
         Restaurant restaurant = Restaurant.builder()
                 .name(request.name())
