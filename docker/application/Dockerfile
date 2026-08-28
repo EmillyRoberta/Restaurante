@@ -26,6 +26,8 @@ ARG JAR_FILE=/restaurante/target/*.jar
 
 COPY --from=build $JAR_FILE /restaurante/runner.jar
 
-EXPOSE 8080
+# Non root user
+RUN groupadd -r owneruser && useradd -r -g owneruser owneruser
+USER owneruser
 
-ENTRYPOINT java -jar /restaurante/runner.jar
+ENTRYPOINT ["java", "-jar", "/restaurante/runner.jar"]
