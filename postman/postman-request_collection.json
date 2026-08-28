@@ -371,7 +371,7 @@
                       }
                     },
                     "url": {
-                      "raw": "http://{{host}}:{{port}}/v1/users/change-password",
+                      "raw": "http://{{host}}:{{port}}/v1/auth/change-password",
                       "protocol": "http",
                       "host": [
                         "{{host}}"
@@ -379,7 +379,7 @@
                       "port": "{{port}}",
                       "path": [
                         "v1",
-                        "users",
+                        "auth",
                         "change-password"
                       ]
                     }
