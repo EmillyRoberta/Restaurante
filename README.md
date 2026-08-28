@@ -38,6 +38,10 @@ As requisições estão em [Postman Request Collection](postman/postman-request_
 Há requisições para CRUD e validações das entidades do projeto que funcionam de forma independente. 
 Apenas é necessário executá-las na ordem dentro da mesma pasta, que estão organizadas por cenários.
 
+### Configurando as variáveis globais
+Há duas variáveis globais, a `host` e a `port`, popule-as para configurar a URL corretamente.
+A porta padrão configurada na aplicação é a `8080`.
+
 ## Documentação da API (Swagger)
 Acesse o path "my-docs" para visualizar a documentação da API. 
 ```
