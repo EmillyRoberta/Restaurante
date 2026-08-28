@@ -6,12 +6,15 @@ import br.com.fiap.restaurante.restaurante.services.UserService;
 import dtos.LoginRequest;
 import dtos.UserResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +35,8 @@ public class AuthController {
             summary = "Authenticates.")
     @ApiResponses(value = {
             @ApiResponse(description = "Success.", responseCode = HttpStatusCode.OK),
-            @ApiResponse(description = "Login or password does not match.", responseCode = HttpStatusCode.UNAUTHORIZED)
+            @ApiResponse(description = "Login or password does not match.", responseCode = HttpStatusCode.UNAUTHORIZED,
+                    content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     }
     )
     @PostMapping("/login")

@@ -26,6 +26,12 @@ docker build --no-cache --progress=plain -t restaurante . -f docker/application/
 docker run --rm -e SPRING_PROFILES_ACTIVE=docker -it restaurante
 ```
 
+## Postman
+As requisições estão em [Postman Request Collection](postman/postman-request_collection.json) 
+(`postman/postman-request_collection.json`).</br>
+Há requisições para CRUD e validações das entidades do projeto que funcionam de forma independente. 
+Apenas é necessário executá-las na ordem dentro da mesma pasta, que estão organizadas por cenários.
+
 ## Documentação da API (Swagger)
 Acesse o path "my-docs" para visualizar a documentação da API. 
 ```
