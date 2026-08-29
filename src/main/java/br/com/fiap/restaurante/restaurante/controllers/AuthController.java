@@ -2,7 +2,7 @@ package br.com.fiap.restaurante.restaurante.controllers;
 
 
 import br.com.fiap.restaurante.restaurante.controllers.types.HttpStatusCode;
-import br.com.fiap.restaurante.restaurante.services.UserService;
+import br.com.fiap.restaurante.restaurante.services.AuthService;
 import dtos.ChangePasswordRequest;
 import dtos.LoginRequest;
 import dtos.UserResponse;
@@ -27,7 +27,7 @@ import javax.security.auth.login.LoginException;
 public class AuthController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
-    private final UserService userService;
+    private final AuthService authService;
 
     @Operation(description = "Authenticates.",
             summary = "Authenticates.")
@@ -41,7 +41,7 @@ public class AuthController {
     public ResponseEntity<String> login(
             @Valid @RequestBody LoginRequest request) throws LoginException {
 
-        UserResponse user = userService.validateLogin(request);
+        UserResponse user = authService.validateLogin(request);
         return ResponseEntity.ok("User " + user.login() + " is logged in.");
     }
 
@@ -58,6 +58,6 @@ public class AuthController {
             @Valid @RequestBody ChangePasswordRequest request) throws LoginException {
 
         LOGGER.info("Login '{}' changed his password.", request.login());
-        return ResponseEntity.ok(userService.changePassword(request));
+        return ResponseEntity.ok(authService.changePassword(request));
     }
 }

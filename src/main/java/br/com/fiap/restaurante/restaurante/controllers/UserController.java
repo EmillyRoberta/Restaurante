@@ -1,6 +1,7 @@
 package br.com.fiap.restaurante.restaurante.controllers;
 
 import br.com.fiap.restaurante.restaurante.controllers.types.HttpStatusCode;
+import br.com.fiap.restaurante.restaurante.services.AuthService;
 import br.com.fiap.restaurante.restaurante.services.UserService;
 import dtos.ChangePasswordRequest;
 import dtos.CreateUserRequest;
@@ -30,6 +31,7 @@ import java.util.List;
 public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
+    private final AuthService authService;
 
     @Operation(description = "Creates new user. E-mail and login must be unique.",
             summary = "Creates new user.",
@@ -43,8 +45,10 @@ public class UserController {
     public ResponseEntity<UserResponse> createUser(
             @Valid @RequestBody CreateUserRequest request) {
         LOGGER.info("/save - " + request.toString());
+        String encodedPassword = authService.encodePassword(request.password());
+        CreateUserRequest requestWithEncodedPassword = new CreateUserRequest(request, encodedPassword);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(requestWithEncodedPassword));
     }
 
     @Operation(description = "Updates user data. E-mail and login must be unique.",
