@@ -1,17 +1,8 @@
 package br.com.fiap.restaurante.restaurante;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@OpenAPIDefinition(
-        info = @Info(
-                title = "Restaurant API Documentation",
-                version = "1.0",
-                description = "Restaurants' API documentation. To access the JSON API documentation, see the path 'api-docs'."
-        )
-)
 @SpringBootApplication
 public class RestauranteApplication {
 
