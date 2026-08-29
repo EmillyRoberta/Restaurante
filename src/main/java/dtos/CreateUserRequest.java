@@ -16,7 +16,7 @@ public record CreateUserRequest(
         String login,
 
         @NotBlank(message = "'password' is required")
-        @Size(min = 6, max = 15, message = "'oldPassword' must be between {min} and {max} characters long")
+        @Size(min = 6, max = 255, message = "'password' must be between {min} and {max} characters long")
         String password,
 
         @NotNull(message = "'address' is required")
@@ -25,6 +25,10 @@ public record CreateUserRequest(
         @NotNull(message = "'userType' is required")
         UserType userType
 ) {
+
+    public CreateUserRequest(CreateUserRequest record,  String encodedPassword) {
+        this(record.name(), record.email(), record.login(), encodedPassword, record.address(), record.userType());
+    }
 
     @Override
     public String toString() {

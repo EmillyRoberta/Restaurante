@@ -7,7 +7,9 @@ import br.com.fiap.restaurante.restaurante.repositories.UserRepository;
 import br.com.fiap.restaurante.restaurante.services.exceptions.BusinessException;
 import br.com.fiap.restaurante.restaurante.services.exceptions.NonUniqueFieldException;
 import br.com.fiap.restaurante.restaurante.services.exceptions.ResourceNotFoundException;
-import dtos.*;
+import dtos.CreateUserRequest;
+import dtos.UpdateUserRequest;
+import dtos.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.data.domain.Page;
@@ -22,8 +24,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    public final UserRepository userRepository;
-    public final RestaurantRepository restaurantRepository;
+
+    private final UserRepository userRepository;
+    private final RestaurantRepository restaurantRepository;
 
     public UserResponse createUser(CreateUserRequest request) {
         validateUniqueFields(request.email(), request.login(), null);
@@ -135,28 +138,12 @@ public class UserService {
         }
     }
 
-    public UserResponse validateLogin(LoginRequest request) throws LoginException {
-        User user = findUserByLogin(request.login());
-
-        if (!user.getPassword().equals(request.password())) {
-            throw new LoginException("Invalid login or password");
-        }
-
-        return UserResponse.fromEntity(user);
-    }
-
-    public UserResponse changePassword(ChangePasswordRequest request) throws BusinessException, LoginException {
-        User user = findUserByLogin(request.login());
-        LoginRequest loginRequest = new LoginRequest(request.login(), request.oldPassword());
-        validateLogin(loginRequest);
-
-        user.setPassword(request.newPassword());
-
-        return UserResponse.fromEntity(userRepository.save(user));
-    }
-
     public User findUserByLogin(String login) throws LoginException {
         return userRepository.findByLogin(login)
                              .orElseThrow(() -> new LoginException("Invalid login"));
+    }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 }

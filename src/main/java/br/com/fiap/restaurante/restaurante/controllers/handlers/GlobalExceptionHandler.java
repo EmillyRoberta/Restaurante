@@ -71,7 +71,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setDetail("One or more fields failed validation checks.");
         problemDetail.setStatus(HttpStatus.BAD_REQUEST);
 
-        // Extract invalid fields cleanly into a structured map
+        // Extract invalid fields into a map
         Map<String, String> validationErrors = ex.getBindingResult().getFieldErrors().stream()
                                                  .collect(Collectors.toMap(
                                                          FieldError::getField,
