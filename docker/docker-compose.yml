@@ -2,9 +2,6 @@ services:
   db:
     image: postgres:18.6-alpine3.24
     container_name: db-postgres
-    build:
-      context: ../
-      no_cache: true
     user: "${POSTGRES_ALPINE_GROUP_UID}:${POSTGRES_ALPINE_USER_UID}" # Forces to use the non-root user Container "postgres"
     ports:
       - "5432:5432"
