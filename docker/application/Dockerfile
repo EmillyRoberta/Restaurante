@@ -5,13 +5,9 @@ FROM eclipse-temurin:21.0.12_8-jdk-noble AS build
 
 ENV HOME=/restaurante
 
-RUN mkdir -p HOME
-
 WORKDIR $HOME
 
 ADD . $HOME
-
-COPY mvnw pom.xml ./
 
 RUN chmod +x mvnw
 
