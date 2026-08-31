@@ -68,7 +68,6 @@ public class UserController {
     ) {
         LOGGER.info("Update User - " + request.toString());
 
-        userService.updateUser(id, request);
         return ResponseEntity.ok(userService.updateUser(id, request));
     }
 
